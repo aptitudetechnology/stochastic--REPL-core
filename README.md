@@ -59,6 +59,38 @@ Upload `stochastic_repl.ino` using Arduino IDE (configure for ELM11 board).
 > print r       # Print result (~0.125)
 ```
 
+## Testing
+
+Run the test suite to verify all components:
+
+```bash
+# Run all tests
+python3 tests/test_end_to_end.py
+
+# Run individual tests
+python3 tests/test_lean.py          # Lean 4 formal verification
+python3 tests/test_verilog.py       # Verilog simulation
+python3 tests/test_lua_repl.py      # Lua REPL functionality
+```
+
+## FPGA Serial Communication
+
+The ELM11 Lua firmware includes placeholders for FPGA communication. Once the Tang Nano 9K is programmed with the Verilog design:
+
+1. Connect ELM11 UART TX/RX to FPGA UART pins
+2. Update the `send_to_fpga()` and `receive_from_fpga()` functions in `elm11-firmware/stochastic_repl.lua`
+3. The FPGA will handle stochastic bitstream generation and arithmetic operations
+
+## End-to-End Testing
+
+The `test_end_to_end.py` script verifies:
+- Lean 4 theorem correctness
+- Verilog module simulation
+- Lua command parsing
+- Stochastic computation accuracy
+
+Expected accuracy: ±1% for 1024-bit streams, improving with longer streams.
+
 ## Mathematical Foundation
 
 See `math.md` for theorems behind stochastic computing.
