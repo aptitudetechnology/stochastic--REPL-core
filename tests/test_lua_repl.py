@@ -26,10 +26,15 @@ def test_lua_repl(port='/dev/ttyUSB1', baudrate=115200):
         response = ser.read(1000).decode('utf-8', errors='ignore')
         print(f"Response: {response}")
 
-        if "Commands:" in response:
+        if "Commands:" in response and "load" in response:
             print("✓ Help command works")
         else:
-            print("✗ Help command failed")
+            print("✗ Help command failed - Lua REPL may not be loaded")
+            print("  Try loading the Lua script via the ELM11 interface first")
+            print("  Run: cd references/ELM11-Lua-FFT && python3 elm11_interface.py")
+            print("  Then select 'Load FFT Code' and 'Run FFT Analysis'")
+            ser.close()
+            return False
 
         # Test load command
         print("Sending 'load a 128' command...")
