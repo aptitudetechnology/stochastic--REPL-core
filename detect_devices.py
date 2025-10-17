@@ -23,9 +23,18 @@ def detect_devices():
             ser = serial.Serial(port.device, 115200, timeout=1)
             time.sleep(0.1)
 
-            # Send newline
-            ser.write(b'\n')
-            time.sleep(0.1)
+            # Try to initialize ELM11
+            ser.write(b'q\r\n')  # Exit command mode
+            time.sleep(0.5)
+            ser.read(256)
+            ser.write(b'exit\r\n')
+            time.sleep(0.5)
+            ser.read(256)
+            ser.write(b'exit\r\n')  # Again
+            time.sleep(0.5)
+            ser.read(256)
+            ser.write(b'\r\n')  # Get prompt
+            time.sleep(0.5)
             response = ser.read(100)
 
             ser.close()
