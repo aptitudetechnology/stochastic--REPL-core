@@ -19,3 +19,10 @@ Combining these two concepts would create a system that operates very differentl
     Evaluate (execute): The core would contain simple stochastic logic circuits (AND gates, MUXes, etc.) to perform the required computation on the bitstreams. This computation would be inherently approximate but highly parallel and low-power.
     Print (output): Once the operation is complete (or a desired level of accuracy is reached), the resulting output bitstream would be converted back into a binary number using a simple counter.
     Loop: The system returns the binary result to the user, who can then enter the next command. 
+
+## Project Implementation
+
+This project will implement the stochastic computing REPL core using the following technologies:
+
+- **Hardware Platform**: ELM11 controller with REPL cores, integrated with the Tang Nano 9K FPGA for prototyping and testing.
+- **Programming Language**: Lean v4 will be used as much as possible for formal specification, theorem proving, and code generation to ensure correctness and reliability of the stochastic computations.
