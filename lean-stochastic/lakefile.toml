@@ -1,0 +1,10 @@
+name = "lean-stochastic"
+version = "0.1.0"
+defaultTargets = ["lean-stochastic"]
+
+[[lean_lib]]
+name = "LeanStochastic"
+
+[[lean_exe]]
+name = "lean-stochastic"
+root = "Main"
