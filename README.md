@@ -105,19 +105,44 @@ Shipping (2-day)            $8.00
 Total: $13
 ```
 
-#### Power Consumption Comparison
-```
-FPGA (Tang Nano 9K):     50-200 mW
-CMOS ICs (4000-series):  0.0002 mW
-Efficiency gain:         500,000x lower!
-```
+#### Performance Trade-offs: Speed vs. Power
 
-#### Hybrid System Benefits
-**FPGA (Control) + CMOS (Computation) = Best of Both Worlds**
-- FPGA handles complex control and REPL interface
-- CMOS performs ultra-low-power stochastic operations
-- Empirical validation of Lean 4 theorems in real silicon
-- Educational platform showing CMOS LSI design
+**FPGA Alone (High Speed):**
+- Clock rates: 100-200 MHz
+- Operation time: Microseconds per computation
+- Power: 50-200 mW
+- **Best for**: Real-time applications, high-throughput processing
+
+**FPGA + CMOS (Ultra-Low Power):**
+- CMOS speed: 1-10 MHz (slower gates)
+- Operation time: Milliseconds per computation (longer bitstreams)
+- Power: 0.0002 mW (500,000x more efficient!)
+- **Best for**: Battery-powered devices, educational validation, research
+
+**Key Insight**: Stochastic computing prioritizes **accuracy over speed**
+- Uses long bitstreams (256-1024 bits) for precision
+- CMOS validates Lean theorems in real silicon
+- FPGA provides fast control and data movement
+
+#### When to Use Each Approach
+
+**Use FPGA Alone:**
+- Real-time processing requirements
+- High-throughput applications
+- When power consumption isn't critical
+- Development and testing
+
+**Use FPGA + CMOS:**
+- Ultra-low-power applications (IoT, sensors, wearables)
+- Educational demonstrations of CMOS LSI design
+- Hardware validation of formal verification
+- Research into probabilistic computing
+- Battery-powered stochastic systems
+
+**Hybrid Benefits:**
+- FPGA handles complex control and high-speed I/O
+- CMOS performs ultra-efficient stochastic computations
+- Best of both worlds: speed + efficiency
 
 ## The Verification Philosophy 🏛️
 
@@ -249,22 +274,23 @@ See [`lsi/poor-mans-lsi.md`](lsi/poor-mans-lsi.md) for complete schematics and b
 ```
 > fpga_mode
 Using Tang Nano 9K FPGA
-Power: 52 mW
+Power: 52 mW | Speed: ~10 µs per operation
 > load a 128
 > load b 64
 > mul
-Result: 0.125
+Result: 0.125 (exact)
 ```
 
 ### CMOS Mode (Ultra-Low Power - Educational)
 ```
 > discrete_mode on
 Using 4000-series CMOS ICs
-Power: 0.00025 mW (208,000x more efficient!)
+Power: 0.00025 mW | Speed: ~5 ms per operation (500x slower)
 > load a 128
 > load b 64
 > mul
 Result: 0.126 (hardware validation of theory!)
+Efficiency gain: 208,000x power, 500x slower
 ```
 
 ### Basic Operations
