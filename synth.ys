@@ -1,0 +1,20 @@
+# Yosys synthesis script for Tang Nano 9K stochastic computing core
+
+# Read Verilog sources
+read_verilog verilog/sng.v
+read_verilog verilog/stochastic_multiplier.v
+read_verilog verilog/stochastic_adder.v
+read_verilog verilog/bitstream_converter.v
+read_verilog verilog/stochastic_repl_core.v
+
+# Set top module
+hierarchy -top stochastic_repl_core
+
+# Synthesis for Gowin FPGA (GW1NR-9)
+synth_gowin -json design.json -top stochastic_repl_core
+
+# Report statistics
+stat
+
+# Check design
+check
