@@ -1,31 +1,35 @@
 /-
-GitHub Copilot:
-Write the complete proof in Lean 4 for the commutativity of addition
-on the natural numbers (Nat).
-The proof should be done by induction on the first variable 'n'.
-You will need to use the `add_succ` theorem (`n + (Nat.succ m) = Nat.succ (n + m)`)
-or related properties, and the basic definitions:
-- n + 0 = n
-- n + (m + 1) = (n + m) + 1
-
-Prove the theorem `Nat.add_comm`.
+Complete proof of commutativity of addition on natural numbers.
+This demonstrates the proof pattern you'll use for stochastic computing theorems.
 -/
+import Lean.Data.Nat.Basic
 
-import Lean.Data.Nat.Basic -- Imports basic Nat definitions if needed
+-- Helper lemma: 0 + n = n (already in Lean, but shown for clarity)
+theorem Nat.zero_add (n : Nat) : 0 + n = n := by
+  induction n with
+  | zero => rfl
+  | succ n ih => 
+    rw [Nat.add_succ]
+    rw [ih]
 
--- Define the theorem statement
+-- Helper lemma: (n + 1) + m = n + (m + 1)
+theorem Nat.succ_add (n m : Nat) : Nat.succ n + m = Nat.succ (n + m) := by
+  induction m with
+  | zero => rfl
+  | succ m ih =>
+    rw [Nat.add_succ, Nat.add_succ]
+    rw [ih]
+
+-- Main theorem: addition is commutative
 theorem Nat.add_comm (n m : Nat) : n + m = m + n := by
-  -- Start the proof strategy: induction on n
   induction n with
   | zero =>
     -- Base case: 0 + m = m + 0
-    -- Hint: Use the definition of addition
-    sorry -- Copilot should fill this in
+    rw [Nat.zero_add]
+    rw [Nat.add_zero]
   | succ n ih =>
     -- Inductive step: (n + 1) + m = m + (n + 1)
-    -- The inductive hypothesis `ih` is n + m = m + n
-    sorry -- Copilot should fill this in
-
--- Expected result format:
--- theorem Nat.add_comm (n m : Nat) : n + m = m + n := by
---   ... complete proof using induction on n ...
+    -- ih : n + m = m + n
+    rw [Nat.succ_add]  -- (n + 1) + m = (n + m) + 1
+    rw [ih]            -- (n + m) + 1 = (m + n) + 1
+    rw [Nat.add_succ]  -- (m + n) + 1 = m + (n + 1)
