@@ -22,38 +22,28 @@
             overflow: hidden;
         }
 
-        #header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         h1 {
             font-size: 2.5em;
-            text-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
-            animation: pulse 2s infinite;
+            text-shadow: 0 0 20px #0f0;
             margin-bottom: 10px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            text-align: center;
         }
 
         .subtitle {
             font-size: 0.9em;
             opacity: 0.7;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         #gameContainer {
             position: relative;
             border: 3px solid #0f0;
             box-shadow: 0 0 30px #0f0;
-            background: #000;
         }
 
-        #gameCanvas {
+        canvas {
             display: block;
-            image-rendering: pixelated;
             background: #000;
         }
 
@@ -61,14 +51,14 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.8);
-            pointer-events: none;
+            color: #0f0;
         }
 
         #overlay.hidden {
@@ -86,9 +76,23 @@
             margin: 5px 0;
         }
 
-        #startBtn {
-            pointer-events: all;
+        button {
+            background: #000;
+            color: #0f0;
+            border: 2px solid #0f0;
+            padding: 12px 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            cursor: pointer;
             margin-top: 20px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 20px #0f0;
         }
 
         #hud {
@@ -125,25 +129,15 @@
             width: 800px;
         }
 
-        .control-section {
-            margin-bottom: 15px;
-        }
-
-        .control-section h3 {
-            font-size: 1em;
-            margin-bottom: 10px;
-            color: #0f0;
-        }
-
         .slider-group {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .slider-group label {
-            min-width: 150px;
+            min-width: 180px;
             font-size: 0.9em;
         }
 
@@ -171,22 +165,13 @@
             font-weight: bold;
         }
 
-        button {
-            background: #000;
+        select {
+            flex-grow: 1;
+            padding: 8px;
+            background: rgba(0, 255, 0, 0.1);
             color: #0f0;
-            border: 2px solid #0f0;
-            padding: 12px 30px;
+            border: 1px solid #0f0;
             font-family: 'Courier New', monospace;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-        }
-
-        button:hover {
-            background: #0f0;
-            color: #000;
-            box-shadow: 0 0 20px #0f0;
         }
 
         #info {
@@ -199,7 +184,52 @@
             line-height: 1.6;
         }
 
+        .highlight {
+            color: #ff0;
+            font-weight: bold;
+        }
+
+        #healthBar {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #healthBarContainer {
+            width: 100px;
+            height: 16px;
+            background: #222;
+            border: 1px solid #0f0;
+            display: inline-block;
+        }
+
+        #healthFill {
+            height: 100%;
+            background: #0f0;
+            width: 100%;
+            transition: width 0.3s;
+        }
+
         /* Modal Styles */
+        #settingsBtn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #000;
+            color: #0f0;
+            border: 2px solid #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        #settingsBtn:hover {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 20px #0f0;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -208,15 +238,15 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(5px);
         }
 
         .modal-content {
             background-color: #000;
             margin: 5% auto;
-            padding: 0;
-            border: 2px solid #0f0;
+            padding: 30px;
+            border: 3px solid #0f0;
             width: 90%;
             max-width: 600px;
             box-shadow: 0 0 50px #0f0;
@@ -224,123 +254,107 @@
         }
 
         @keyframes modalFadeIn {
-            from {opacity: 0; transform: scale(0.9);}
-            to {opacity: 1; transform: scale(1);}
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .modal-header {
-            padding: 20px;
-            background: rgba(0, 255, 0, 0.1);
-            border-bottom: 1px solid #0f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #0f0;
+            padding-bottom: 15px;
         }
 
-        .modal-header h2 {
+        .modal-header h3 {
             margin: 0;
             color: #0f0;
-            font-size: 1.2em;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px #0f0;
         }
 
-        .modal-close {
+        .close-btn {
+            background: none;
+            border: none;
             color: #0f0;
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 2em;
             cursor: pointer;
-            transition: color 0.3s;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
         }
 
-        .modal-close:hover {
-            color: #fff;
+        .close-btn:hover {
+            color: #ff0;
+            text-shadow: 0 0 10px #ff0;
         }
 
         .modal-body {
-            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
         }
 
-        .settings-info {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0, 255, 0, 0.05);
-            border: 1px solid #0f0;
+        .modal .slider-group {
+            margin-bottom: 20px;
         }
 
-        .settings-info h3 {
-            margin-top: 0;
+        .modal .slider-group label {
+            min-width: 200px;
+            font-size: 1em;
             color: #0f0;
+        }
+
+        .modal input[type="range"] {
+            flex-grow: 1;
+            height: 8px;
+            background: #0f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .modal input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #0f0;
+            cursor: pointer;
+            box-shadow: 0 0 15px #0f0;
+            border-radius: 50%;
+        }
+
+        .modal .value-display {
+            min-width: 100px;
+            text-align: right;
+            font-weight: bold;
+            color: #0f0;
+            font-size: 1.1em;
+        }
+
+        .modal select {
+            flex-grow: 1;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            color: #0f0;
+            border: 2px solid #0f0;
+            font-family: 'Courier New', monospace;
             font-size: 1em;
         }
 
-        .settings-info ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-
-        .settings-info li {
-            margin-bottom: 5px;
-            line-height: 1.4;
-        }
-
-        .modal-footer {
-            padding: 20px;
-            background: rgba(0, 255, 0, 0.1);
-            border-top: 1px solid #0f0;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            padding: 10px 20px;
-            background: rgba(0, 255, 0, 0.2);
-            border: 1px solid #0f0;
-            color: #0f0;
-            font-family: 'Courier New', monospace;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            font-size: 0.9em;
-        }
-
-        .modal-btn:hover {
-            background: #0f0;
-            color: #000;
+        .modal select:focus {
+            outline: none;
             box-shadow: 0 0 10px #0f0;
-        }
-
-        #settingsBtn {
-            font-size: 0.9em;
-            padding: 8px 16px;
-            font-weight: bold;
-            text-shadow: 0 0 5px #0f0;
-            box-shadow: 0 0 10px rgba(0,255,0,0.5);
-            animation: pulse 2s infinite;
-        }
-
-        #settingsBtn:hover {
-            background: rgba(0, 255, 0, 0.5);
-            box-shadow: 0 0 20px #0f0;
-            transform: scale(1.05);
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px rgba(0,255,0,0.5); }
-            50% { box-shadow: 0 0 20px rgba(0,255,0,0.8); }
-            100% { box-shadow: 0 0 10px rgba(0,255,0,0.5); }
-        }
-
-        .highlight {
-            color: #ff0;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div id="header">
-        <h1>⚡ STOCHASTIC SPACE INVADERS ⚡</h1>
-        <div class="subtitle">Where Physics Meets Probability</div>
-    </div>
+    <h1>⚡ STOCHASTIC SPACE INVADERS ⚡</h1>
+    <div class="subtitle">Where Physics Meets Probability</div>
 
     <div id="gameContainer">
         <canvas id="gameCanvas" width="800" height="600"></canvas>
@@ -381,102 +395,79 @@
         <div class="hud-item">
             <div class="hud-label">HEALTH</div>
             <div class="hud-value" id="healthBar">
-                <div style="width:100px; height:16px; background:#222; border:1px solid #0f0; display:inline-block; vertical-align:middle;">
-                    <div id="healthFill" style="height:100%; background:#0f0; width:100%; transition:width 0.2s;"></div>
+                <div id="healthBarContainer">
+                    <div id="healthFill"></div>
                 </div>
                 <span id="healthPercent">100%</span>
             </div>
         </div>
         <div class="hud-item">
-            <button id="settingsBtn" style="background: rgba(0,255,0,0.3); border: 2px solid #0f0; color: #0f0; padding: 10px 20px; font-family: 'Courier New', monospace; cursor: pointer; font-weight: bold; text-shadow: 0 0 5px #0f0; box-shadow: 0 0 10px rgba(0,255,0,0.5); animation: pulse 2s infinite;">⚙ STOCHASTIC SETTINGS</button>
+            <div class="hud-label">ENEMY FIRE RATE</div>
+            <div class="hud-value" id="fireRate">1.0x</div>
         </div>
     </div>
 
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>⚙ STOCHASTIC PARAMETERS</h2>
-                <span class="modal-close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="control-section">
-                    <div class="slider-group">
-                        <label>Bitstream Length:</label>
-                        <input type="range" id="bitstream" min="16" max="256" value="64" step="16">
-                        <span class="value-display" id="bitstreamValue">64 bits</span>
-                    </div>
-                    <div class="slider-group">
-                        <label>Quantum Noise:</label>
-                        <input type="range" id="noise" min="0" max="50" value="15">
-                        <span class="value-display" id="noiseValue">15%</span>
-                    </div>
-                    <div class="slider-group">
-                        <label>Correlation Factor:</label>
-                        <input type="range" id="correlation" min="0" max="100" value="30">
-                        <span class="value-display" id="correlationValue">30%</span>
-                    </div>
-                    <div class="slider-group">
-                        <label>Firing Mode:</label>
-                        <select id="firingMode" style="flex-grow: 1; padding: 8px; background: rgba(0,255,0,0.1); color: #0f0; border: 1px solid #0f0; font-family: 'Courier New', monospace;">
-                            <option value="deterministic">Deterministic (Classic)</option>
-                            <option value="offset" selected>Stochastic Offset (Balanced)</option>
-                            <option value="full">Full Chaos (Maximum Stochastic)</option>
-                        </select>
-                        <span class="value-display" id="firingModeValue">Balanced</span>
-                    </div>
-                </div>
-                
-                <div class="settings-info">
-                    <h3>ℹ PARAMETER EFFECTS</h3>
-                    <ul>
-                        <li><span class="highlight">Bitstream Length</span>: Lower = faster computation, more chaos</li>
-                        <li><span class="highlight">Quantum Noise</span>: Higher = more uncertainty in calculations</li>
-                        <li><span class="highlight">Correlation</span>: Lower = better accuracy, higher independence</li>
-                        <li><span class="highlight">Firing Mode</span>: Controls bullet trajectory stochasticity</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="applySettings" class="modal-btn">APPLY SETTINGS</button>
-                <button id="closeSettings" class="modal-btn">CLOSE</button>
-            </div>
-        </div>
-    </div>
+    <button id="settingsBtn">⚙ STOCHASTIC PARAMETERS</button>
 
     <div id="info">
         <strong>STOCHASTIC COMPUTING EFFECTS:</strong><br>
-        • <span class="highlight">Invader positions</span> calculated with probabilistic bitstreams - they jitter!<br>
+        • <span class="highlight">Invader positions</span> calculated with probabilistic bitstreams - they jitter and oscillate!<br>
         • <span class="highlight">Bullet trajectories</span> have stochastic variance - may miss even when aimed perfectly<br>
         • <span class="highlight">Collision detection</span> is probabilistic - sometimes hits count, sometimes they don't<br>
+        • <span class="highlight">Enemy firing</span> uses stochastic timing - one bullet at a time with unpredictable intervals<br>
         • <span class="highlight">Lower bitstream</span> = more chaos, faster computation<br>
         • <span class="highlight">Higher noise</span> = quantum uncertainty increases<br>
-        • <span class="highlight">Correlation</span> = bitstream independence (lower = better accuracy)<br>
         <br>
         <em>This demonstrates how stochastic computing trades precision for simplicity!</em>
     </div>
 
+    <!-- Modal for Stochastic Parameters -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙ STOCHASTIC PARAMETERS</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="slider-group">
+                    <label>Bitstream Length:</label>
+                    <input type="range" id="bitstream" min="16" max="256" value="64" step="16">
+                    <span class="value-display" id="bitstreamValue">64 bits</span>
+                </div>
+                <div class="slider-group">
+                    <label>Quantum Noise:</label>
+                    <input type="range" id="noise" min="0" max="50" value="15">
+                    <span class="value-display" id="noiseValue">15%</span>
+                </div>
+                <div class="slider-group">
+                    <label>Correlation Factor:</label>
+                    <input type="range" id="correlation" min="0" max="100" value="30">
+                    <span class="value-display" id="correlationValue">30%</span>
+                </div>
+                <div class="slider-group">
+                    <label>Firing Mode:</label>
+                    <select id="firingMode">
+                        <option value="deterministic">Deterministic (Classic)</option>
+                        <option value="offset" selected>Stochastic Offset (Balanced)</option>
+                        <option value="full">Full Chaos (Maximum Stochastic)</option>
+                    </select>
+                </div>
+                <div class="slider-group">
+                    <label>Enemy Fire Rate:</label>
+                    <input type="range" id="enemyFireRate" min="1" max="50" value="10">
+                    <span class="value-display" id="enemyFireRateValue">1.0x</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Canvas setup
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const overlay = document.getElementById('overlay');
 
-        // === STOCHASTIC HEALTH ===
-        let playerHealth = 1.0; // 1.0 = full health
-        const maxHealth = 1.0;
-
-        // === AMMO SYSTEM ===
-        let maxAmmo = 30;
-        let ammo = maxAmmo;
-
-        // === AMMO POWERUP (ENHANCED) ===
-        let ammoPowerup = null;
-        let ammoPowerupPulse = 0;
-        let floatingText = null;
-
-        let shotsFired = 0;
-        let totalHits = 0;
+        // Audio context for sound effects
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         // Game state
         let gameState = 'menu';
@@ -485,13 +476,21 @@
         let wave = 1;
         let invaderSpeed = 1;
 
-        // Stochastic parameters (current values)
+        // Player stats
+        let playerHealth = 1.0;
+        let maxAmmo = 30;
+        let ammo = maxAmmo;
+        let shotsFired = 0;
+        let totalHits = 0;
+
+        // Stochastic parameters
         let currentBitstream = 64;
         let currentNoise = 15;
         let currentCorrelation = 30;
         let currentFiringMode = 'offset';
+        let enemyFireRateMultiplier = 1.0;
 
-        // Player
+        // Game entities
         let player = {
             x: 400,
             y: 550,
@@ -501,31 +500,27 @@
             hit: false
         };
 
-        // Invaders
         let invaders = [];
         let invaderDirection = 1;
-        let invaderDropDistance = 20;
-
-        // Bullets
         let bullets = [];
         let enemyBullets = [];
-
-        // Particles
         let particles = [];
+        let ammoPowerup = null;
+        let floatingText = null;
 
-        // Input
-        let keys = {};
+        // Enemy firing system
+        let lastEnemyFireTime = 0;
+        let enemyFireInterval = 1000; // Base interval in ms
 
-        // Stochastic computing functions
+        // === STOCHASTIC COMPUTING FUNCTIONS ===
         function generateBitstream(value, length, noise, seed = Math.random()) {
             const stream = [];
-            let lfsr = seed * 0xFFFF;
+            let lfsr = Math.floor(seed * 0xFFFF) | 1;
             
             for (let i = 0; i < length; i++) {
                 const bit = lfsr & 1;
                 lfsr = (lfsr >> 1) ^ (bit ? 0xB400 : 0);
                 const random = (lfsr / 0xFFFF);
-                
                 const noiseAdjust = (Math.random() - 0.5) * (noise / 100);
                 stream.push(random < (value + noiseAdjust) ? 1 : 0);
             }
@@ -536,13 +531,6 @@
             const seed = correlation / 100;
             const stream = generateBitstream(Math.min(1, Math.max(0, value)), bitstream, noise, seed);
             return stream.reduce((a, b) => a + b, 0) / stream.length;
-        }
-
-        function stochasticAdd(a, b, bitstream, noise, correlation) {
-            // Properly add two numbers using stochastic computing
-            const sum = a + b;
-            const result = stochasticCompute(sum / 800, bitstream, noise, correlation);
-            return result * 800;
         }
 
         function stochasticMultiply(a, b, bitstream, noise, correlation) {
@@ -556,48 +544,99 @@
             const overlapX = Math.max(0, Math.min(x1 + w1, x2 + w2) - Math.max(x1, x2));
             const overlapY = Math.max(0, Math.min(y1 + h1, y2 + h2) - Math.max(y1, y2));
             const overlap = (overlapX * overlapY) / (w1 * h1);
-            
             return stochasticCompute(overlap, bitstream / 4, noise, 0.5) > 0.3;
         }
 
-        // Initialize invaders
+        // === SOUND EFFECTS ===
+        function playSound(type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            let freq, duration, vol;
+
+            switch(type) {
+                case 'fire':
+                    freq = 400 + Math.random() * 100;
+                    duration = 0.06;
+                    vol = 0.1;
+                    break;
+                case 'hit':
+                    freq = 180 + Math.random() * 50;
+                    duration = 0.08;
+                    vol = 0.15;
+                    break;
+                case 'invader':
+                    freq = 250 + Math.random() * 80;
+                    duration = 0.12;
+                    vol = 0.12;
+                    break;
+                case 'powerup':
+                    freq = 600 + Math.random() * 200;
+                    duration = 0.2;
+                    vol = 0.15;
+                    break;
+            }
+
+            osc.type = 'square';
+            osc.frequency.value = freq;
+            gain.gain.value = vol;
+            osc.connect(gain).connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        // === GAME INITIALIZATION ===
         function createInvaders() {
             invaders = [];
             const rows = 4;
             const cols = 8;
-            const baseSpacing = 60;
+            const spacing = 60;
             const startX = 150;
             const startY = 80;
 
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
-                    // Stochastic spacing and positioning
-                    const spacingVariation = (Math.random() - 0.5) * 20; // ±10 variation
-                    const positionNoise = (Math.random() - 0.5) * 15; // ±7.5 position noise
-                    
-                    const x = startX + col * (baseSpacing + spacingVariation) + positionNoise;
-                    const y = startY + row * (baseSpacing * 0.6 + spacingVariation * 0.5) + positionNoise;
-                    
-                    // Stochastic size variation
-                    const sizeMultiplier = 0.8 + Math.random() * 0.4; // 0.8-1.2x size
+                    const x = startX + col * spacing;
+                    const y = startY + row * spacing * 0.6;
                     
                     invaders.push({
                         x: x,
                         y: y,
-                        width: 30 * sizeMultiplier,
-                        height: 20 * sizeMultiplier,
+                        width: 30,
+                        height: 20,
                         alive: true,
                         targetX: x,
                         targetY: y,
-                        chaosLevel: Math.random(), // Individual chaos factor
-                        phase: Math.random() * Math.PI * 2, // For oscillation effects
-                        lastFireTime: 0 // Track when this invader last fired
+                        phase: Math.random() * Math.PI * 2,
+                        chaosLevel: Math.random()
                     });
                 }
             }
         }
 
-        // Input handling
+        function startGame() {
+            gameState = 'playing';
+            overlay.classList.add('hidden');
+            score = 0;
+            lives = 3;
+            wave = 1;
+            invaderSpeed = 1;
+            playerHealth = 1.0;
+            ammo = maxAmmo;
+            shotsFired = 0;
+            totalHits = 0;
+            player.x = 400;
+            player.hit = false;
+            bullets = [];
+            enemyBullets = [];
+            particles = [];
+            ammoPowerup = null;
+            lastEnemyFireTime = Date.now();
+            createInvaders();
+            updateHUD();
+        }
+
+        // === INPUT HANDLING ===
+        const keys = {};
         window.addEventListener('keydown', (e) => {
             keys[e.key] = true;
             if (e.key === ' ' && gameState === 'playing') {
@@ -610,50 +649,31 @@
             keys[e.key] = false;
         });
 
-        if (document.getElementById('startBtn')) {
-            document.getElementById('startBtn').addEventListener('click', startGame);
-        }
+        document.getElementById('startBtn').addEventListener('click', startGame);
 
-        function startGame() {
-            gameState = 'playing';
-            overlay.classList.add('hidden');
-            score = 0;
-            lives = 3;
-            wave = 1;
-            invaderSpeed = 1;
-            playerHealth = 1.0; // Reset health to full
-            totalHits = 0;
-            shotsFired = 0;
-            player.x = 400;
-            player.hit = false;
-            bullets = [];
-            enemyBullets = [];
-            particles = [];
-            createInvaders();
-            updateHUD();
-        }
-
+        // === PLAYER ACTIONS ===
         function fireBullet() {
             if (ammo <= 0) return;
+
             const bitstream = currentBitstream;
             const noise = currentNoise;
             const mode = currentFiringMode;
-            
             const centerX = player.x + player.width / 2 - 1.5;
             let startX = centerX;
-            
+
             switch(mode) {
                 case 'deterministic':
                     startX = centerX;
                     break;
                 case 'offset':
-                    const offset = (stochasticCompute(0.5, bitstream / 2, noise, 0.2) - 0.5) * 8;
+                    const offset = (stochasticCompute(0.5, bitstream / 2, noise, 0.2) - 0.5) * 10;
                     startX = centerX + offset;
                     break;
                 case 'full':
                     startX = stochasticCompute(centerX / canvas.width, bitstream, noise, 0.1) * canvas.width;
                     break;
             }
+
             bullets.push({
                 x: startX,
                 y: player.y,
@@ -661,122 +681,94 @@
                 height: 10,
                 speed: -8
             });
+
             shotsFired++;
             ammo--;
-            if (ammo === 0) spawnAmmoPowerup();
+            if (ammo === 0 && !ammoPowerup) spawnAmmoPowerup();
             updateHUD();
-            playStochasticSound('fire');
-        }
-        // === STOCHASTIC SOUND EFFECTS ===
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function playStochasticSound(type) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            let freq, duration, vol;
-            switch(type) {
-                case 'fire':
-                    freq = 400 + Math.random() * 120;
-                    duration = 0.07 + Math.random() * 0.04;
-                    vol = 0.12 + Math.random() * 0.08;
-                    break;
-                case 'hit':
-                    freq = 180 + Math.random() * 60;
-                    duration = 0.09 + Math.random() * 0.05;
-                    vol = 0.18 + Math.random() * 0.07;
-                    break;
-                case 'invader':
-                    freq = 250 + Math.random() * 100;
-                    duration = 0.13 + Math.random() * 0.07;
-                    vol = 0.15 + Math.random() * 0.1;
-                    break;
-                case 'powerup_spawn':
-                    freq = 900 + Math.random() * 200;
-                    duration = 0.18 + Math.random() * 0.07;
-                    vol = 0.22 + Math.random() * 0.08;
-                    break;
-                case 'powerup_pickup':
-                    freq = 600 + Math.random() * 200;
-                    duration = 0.22 + Math.random() * 0.09;
-                    vol = 0.25 + Math.random() * 0.1;
-                    break;
-                default:
-                    freq = 300;
-                    duration = 0.1;
-                    vol = 0.1;
-            }
-            osc.type = 'square';
-            osc.frequency.value = freq;
-            gain.gain.value = vol;
-            osc.connect(gain).connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
+            playSound('fire');
         }
 
+        // === ENEMY FIRING (FIXED) ===
         function enemyFire() {
-            // Stochastic firing rate - practically zero for pure strategic gameplay
-            const fireProbability = 0.0000001 + (currentNoise / 100) * 0.0000001; // Base 0.00001% + up to 0.00001% from noise
-            const chaosFire = stochasticCompute(0.5, currentBitstream / 8, currentNoise, Date.now() * 0.001);
+            const now = Date.now();
+            const timeSinceLastFire = now - lastEnemyFireTime;
             
-            if ((Math.random() < fireProbability || chaosFire > 0.99) && invaders.length > 0) {
-                const aliveInvaders = invaders.filter(inv => inv.alive);
-                if (aliveInvaders.length > 0) {
-                    const availableShooters = aliveInvaders.filter(inv => Date.now() - inv.lastFireTime > 500 + Math.random() * 500); // 0.5-1 second cooldown
-                    if (availableShooters.length > 0) {
-                        // Use true random selection instead of stochastic to ensure fair distribution
-                        const shooterIndex = Math.floor(Math.random() * availableShooters.length);
-                        const shooter = availableShooters[shooterIndex];
-                        const bitstream = currentBitstream;
-                        const noise = currentNoise;
-                        
-                        // Stochastic bullet properties
-                        const bulletSpeed = 3 + stochasticCompute(0.6, bitstream / 8, noise, Math.random()) * 3; // 3-6 speed
-                        const bulletSpread = (stochasticCompute(0.5, bitstream / 4, noise, Math.random()) - 0.5) * 20; // ±10 spread
-                        
-                        enemyBullets.push({
-                            x: stochasticAdd(shooter.x + bulletSpread, shooter.width / 2, bitstream, noise, 0.4),
-                            y: shooter.y + shooter.height,
-                            width: 2 + Math.random() * 2, // Variable width
-                            height: 8 + Math.random() * 4, // Variable height
-                            speed: bulletSpeed
-                        });
-                        
-                        shooter.lastFireTime = Date.now(); // Update last fire time
-                        
-                        // Sometimes fire multiple bullets (stochastic barrage)
-                        if (chaosFire > 0.85 && Math.random() < 0.3) {
-                            setTimeout(() => {
-                                enemyBullets.push({
-                                    x: stochasticAdd(shooter.x - bulletSpread, shooter.width / 2, bitstream, noise, 0.4),
-                                    y: shooter.y + shooter.height,
-                                    width: 2 + Math.random() * 2,
-                                    height: 8 + Math.random() * 4,
-                                    speed: bulletSpeed * 0.8
-                                });
-                            }, 100 + Math.random() * 200);
-                        }
-                    }
-                }
+            // Calculate stochastic fire interval
+            const baseInterval = enemyFireInterval / enemyFireRateMultiplier;
+            const intervalVariation = stochasticCompute(0.5, currentBitstream / 4, currentNoise, now * 0.0001);
+            const actualInterval = baseInterval * (0.5 + intervalVariation);
+
+            if (timeSinceLastFire < actualInterval) return;
+
+            const aliveInvaders = invaders.filter(inv => inv.alive);
+            if (aliveInvaders.length === 0) return;
+
+            // Pick ONE random invader to fire
+            const shooter = aliveInvaders[Math.floor(Math.random() * aliveInvaders.length)];
+            
+            // Stochastic bullet properties
+            const bulletSpeed = 3 + stochasticCompute(0.5, currentBitstream / 8, currentNoise, Math.random()) * 2;
+            const bulletSpread = (stochasticCompute(0.5, currentBitstream / 4, currentNoise, Math.random()) - 0.5) * 15;
+
+            enemyBullets.push({
+                x: shooter.x + shooter.width / 2 + bulletSpread,
+                y: shooter.y + shooter.height,
+                width: 3,
+                height: 8,
+                speed: bulletSpeed
+            });
+
+            lastEnemyFireTime = now;
+            playSound('invader');
+        }
+
+        // === POWERUP SYSTEM ===
+        function spawnAmmoPowerup() {
+            if (ammoPowerup) return;
+            ammoPowerup = {
+                x: Math.random() * (canvas.width - 40) + 20,
+                y: -20,
+                width: 20,
+                height: 20,
+                speed: 2,
+                pulse: 0
+            };
+        }
+
+        function updateAmmoPowerup() {
+            if (!ammoPowerup) return;
+
+            ammoPowerup.y += ammoPowerup.speed;
+            ammoPowerup.pulse += 0.1;
+
+            // Check collision with player
+            if (ammoPowerup.x < player.x + player.width &&
+                ammoPowerup.x + ammoPowerup.width > player.x &&
+                ammoPowerup.y < player.y + player.height &&
+                ammoPowerup.y + ammoPowerup.height > player.y) {
+                
+                ammo = Math.min(maxAmmo, ammo + 15);
+                floatingText = {
+                    x: ammoPowerup.x + ammoPowerup.width / 2,
+                    y: ammoPowerup.y,
+                    text: '+15 AMMO',
+                    alpha: 1
+                };
+                ammoPowerup = null;
+                playSound('powerup');
+                updateHUD();
+            }
+
+            // Remove if off screen
+            if (ammoPowerup && ammoPowerup.y > canvas.height + 20) {
+                ammoPowerup = null;
             }
         }
 
-        function updateHUD() {
-            document.getElementById('score').textContent = score;
-            const livesSymbols = '●'.repeat(lives) + '○'.repeat(3 - lives);
-            document.getElementById('lives').textContent = livesSymbols;
-            document.getElementById('wave').textContent = wave;
-            const accuracy = Math.min(100, (currentBitstream / 256) * 100);
-            document.getElementById('accuracy').textContent = accuracy.toFixed(0) + '%';
-            document.getElementById('hits').textContent = totalHits;
-            // Update health bar
-            const percent = Math.max(0, Math.round(playerHealth * 100));
-            document.getElementById('healthFill').style.width = percent + '%';
-            document.getElementById('healthPercent').textContent = percent + '%';
-            document.getElementById('ammo').textContent = ammo;
-        }
-
+        // === PARTICLES ===
         function spawnExplosion(x, y) {
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 12; i++) {
                 const angle = Math.random() * 2 * Math.PI;
                 const speed = 2 + Math.random() * 3;
                 particles.push({
@@ -795,73 +787,29 @@
                 p.y += p.vy;
                 p.vx *= 0.95;
                 p.vy *= 0.95;
-                p.alpha -= 0.025;
+                p.alpha -= 0.02;
             });
             particles = particles.filter(p => p.alpha > 0);
         }
 
-        // === AMMO POWERUP FUNCTIONS ===
-        function spawnAmmoPowerup() {
-            if (ammoPowerup) return; // Don't spawn if one already exists
-            ammoPowerup = {
-                x: Math.random() * (canvas.width - 40) + 20,
-                y: -20,
-                width: 20,
-                height: 20,
-                speed: 2
-            };
-            ammoPowerupPulse = 0;
+        // === HUD ===
+        function updateHUD() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('lives').textContent = '●'.repeat(lives) + '○'.repeat(3 - lives);
+            document.getElementById('wave').textContent = wave;
+            const accuracy = Math.min(100, (currentBitstream / 256) * 100);
+            document.getElementById('accuracy').textContent = accuracy.toFixed(0) + '%';
+            document.getElementById('hits').textContent = totalHits;
+            document.getElementById('ammo').textContent = ammo;
+            
+            const healthPercent = Math.max(0, Math.round(playerHealth * 100));
+            document.getElementById('healthFill').style.width = healthPercent + '%';
+            document.getElementById('healthPercent').textContent = healthPercent + '%';
+            
+            document.getElementById('fireRate').textContent = enemyFireRateMultiplier.toFixed(1) + 'x';
         }
 
-        function updateAmmoPowerup() {
-            if (!ammoPowerup) return;
-            
-            ammoPowerup.y += ammoPowerup.speed;
-            ammoPowerupPulse += 0.1;
-            
-            // Check collision with player
-            if (ammoPowerup.x < player.x + player.width &&
-                ammoPowerup.x + ammoPowerup.width > player.x &&
-                ammoPowerup.y < player.y + player.height &&
-                ammoPowerup.y + ammoPowerup.height > player.y) {
-                
-                // Player collected ammo powerup
-                ammo = Math.min(maxAmmo, ammo + 15);
-                floatingText = {
-                    x: ammoPowerup.x + ammoPowerup.width / 2,
-                    y: ammoPowerup.y,
-                    value: '+15 AMMO',
-                    alpha: 1
-                };
-                ammoPowerup = null;
-                playStochasticSound('powerup_pickup');
-                updateHUD();
-                return; // Exit early since powerup was collected
-            }
-            
-            // Remove if off screen
-            if (ammoPowerup.y > canvas.height + 20) {
-                ammoPowerup = null;
-            }
-        }
-
-        function renderAmmoPowerup() {
-            if (!ammoPowerup) return;
-            
-            ctx.save();
-            const pulse = Math.sin(ammoPowerupPulse) * 0.2 + 0.8;
-            ctx.globalAlpha = pulse;
-            ctx.fillStyle = '#0ff';
-            ctx.fillRect(ammoPowerup.x, ammoPowerup.y, ammoPowerup.width, ammoPowerup.height);
-            
-            // Draw ammo icon
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 14px Courier New';
-            ctx.textAlign = 'center';
-            ctx.fillText('A', ammoPowerup.x + ammoPowerup.width / 2, ammoPowerup.y + ammoPowerup.height / 2 + 5);
-            ctx.restore();
-        }
-
+        // === GAME LOOP ===
         function update() {
             if (gameState !== 'playing') return;
 
@@ -881,46 +829,20 @@
 
             // Update invaders
             let shouldDrop = false;
-            invaders.forEach((inv, index) => {
+            invaders.forEach((inv, idx) => {
                 if (!inv.alive) return;
+
+                // Stochastic movement
+                const time = Date.now() * 0.001;
+                const chaosFactor = stochasticCompute(0.6, bitstream / 8, noise, idx * 0.1 + time);
+                const jitterX = (stochasticCompute(0.5, bitstream / 4, noise, idx + time) - 0.5) * 12 * inv.chaosLevel;
+                const jitterY = (stochasticCompute(0.5, bitstream / 4, noise, idx + 0.5 + time) - 0.5) * 6 * inv.chaosLevel;
                 
-                // Deterministic movement towards target
-                const dx = inv.targetX - inv.x;
-                const dy = inv.targetY - inv.y;
+                inv.x += (inv.targetX - inv.x) * 0.05 + jitterX;
+                inv.y += (inv.targetY - inv.y) * 0.05 + jitterY;
                 
-                // Enhanced stochastic movement - much more chaotic
-                const chaosFactor = stochasticCompute(0.7, bitstream / 8, noise, index * 0.1 + Date.now() * 0.001) * inv.chaosLevel;
-                const randomImpulse = stochasticCompute(0.3, bitstream / 16, noise * 2, index * 0.2 + Math.random());
-                
-                // Large stochastic jitter based on chaos settings and individual chaos level
-                const timeBasedNoise = Date.now() * 0.01 + inv.phase;
-                const jitterX = (stochasticCompute(0.5, bitstream / 2, noise, index + timeBasedNoise) - 0.5) * 15 * chaosFactor;
-                const jitterY = (stochasticCompute(0.5, bitstream / 2, noise, index + 0.5 + timeBasedNoise) - 0.5) * 8 * chaosFactor;
-                
-                // Random teleportation effect (rare but dramatic) - more likely for chaotic invaders
-                if (randomImpulse > 0.8 && Math.random() < 0.03 * inv.chaosLevel) {
-                    inv.x += (Math.random() - 0.5) * 50 * chaosFactor;
-                    inv.y += (Math.random() - 0.5) * 25 * chaosFactor;
-                }
-                
-                // Stochastic speed variation with individual variation
-                const speedMultiplier = 0.7 + stochasticCompute(0.6, bitstream / 4, noise / 2, index * 0.3 + inv.phase) * 0.6;
-                
-                // Add sinusoidal oscillation for some invaders
-                const oscillation = Math.sin(Date.now() * 0.005 + inv.phase) * 2 * inv.chaosLevel;
-                
-                inv.x += dx * 0.06 * speedMultiplier + jitterX + oscillation;
-                inv.y += dy * 0.06 * speedMultiplier + jitterY;
-                
-                // Random direction changes (stochastic rebellion) - more likely for chaotic invaders
-                if (Math.random() < 0.008 * chaosFactor * inv.chaosLevel) {
-                    inv.targetX += (Math.random() - 0.5) * 40 * chaosFactor;
-                }
-                
-                // Update target position with some stochastic variation
-                const stochasticDirection = invaderDirection * (0.9 + Math.random() * 0.2);
-                inv.targetX += stochasticDirection * invaderSpeed;
-                
+                inv.targetX += invaderDirection * invaderSpeed;
+
                 if (inv.targetX <= 30 || inv.targetX >= canvas.width - 50) {
                     shouldDrop = true;
                 }
@@ -929,27 +851,23 @@
             if (shouldDrop) {
                 invaderDirection *= -1;
                 invaders.forEach(inv => {
-                    if (inv.alive) {
-                        inv.targetY += invaderDropDistance;
-                    }
+                    if (inv.alive) inv.targetY += 20;
                 });
             }
 
             // Update bullets
-            bullets = bullets.filter(bullet => {
-                const speedAdjust = stochasticMultiply(bullet.speed, 1, bitstream, noise, correlation);
-                bullet.y += speedAdjust;
-                return bullet.y > 0;
+            bullets.forEach(bullet => {
+                bullet.y += stochasticMultiply(bullet.speed, 1, bitstream, noise, correlation);
             });
+            bullets = bullets.filter(b => b.y > 0);
 
-            enemyBullets = enemyBullets.filter(bullet => {
-                const speedAdjust = stochasticMultiply(bullet.speed, 1, bitstream, noise, correlation);
-                bullet.y += speedAdjust;
-                return bullet.y < canvas.height;
+            enemyBullets.forEach(bullet => {
+                bullet.y += stochasticMultiply(bullet.speed, 1, bitstream, noise, correlation);
             });
+            enemyBullets = enemyBullets.filter(b => b.y < canvas.height);
 
-            // Collision detection
-            bullets.forEach((bullet, bIndex) => {
+            // Collision: player bullets hit invaders
+            bullets.forEach((bullet, bIdx) => {
                 invaders.forEach(inv => {
                     if (inv.alive && stochasticCollision(
                         bullet.x, bullet.y, bullet.width, bullet.height,
@@ -957,84 +875,87 @@
                         bitstream, noise
                     )) {
                         inv.alive = false;
-                        bullets.splice(bIndex, 1);
+                        bullets.splice(bIdx, 1);
                         score += 10;
                         totalHits++;
-                        updateHUD();
                         spawnExplosion(inv.x + inv.width / 2, inv.y + inv.height / 2);
-                        playStochasticSound('invader');
+                        playSound('invader');
+                        updateHUD();
                     }
                 });
             });
 
-            // Enemy bullets hit player
-            enemyBullets.forEach((bullet, bIndex) => {
+            // Collision: enemy bullets hit player
+            enemyBullets.forEach((bullet, bIdx) => {
                 if (stochasticCollision(
                     bullet.x, bullet.y, bullet.width, bullet.height,
                     player.x, player.y, player.width, player.height,
                     bitstream, noise
                 )) {
-                    enemyBullets.splice(bIndex, 1);
-                    // Damage player health instead of lives
-                    playerHealth = Math.max(0, playerHealth - 0.2); // 20% damage per hit
-                    updateHUD();
+                    enemyBullets.splice(bIdx, 1);
+                    playerHealth = Math.max(0, playerHealth - 0.2);
                     player.hit = true;
                     setTimeout(() => player.hit = false, 200);
-                    playStochasticSound('hit');
+                    playSound('hit');
+                    
                     if (playerHealth <= 0) {
-                        lives--; // Lose a life when health reaches 0
+                        lives--;
                         if (lives > 0) {
-                            playerHealth = 1.0; // Reset health for next life
+                            playerHealth = 1.0;
                         } else {
                             gameOver();
                         }
                     }
+                    updateHUD();
                 }
             });
 
+            // Enemy firing
             enemyFire();
+
+            // Update particles and powerups
             updateParticles();
             updateAmmoPowerup();
 
-            // Check for wave complete
-            const aliveCount = invaders.filter(inv => inv.alive).length;
-            if (aliveCount === 0) {
+            // Update floating text
+            if (floatingText) {
+                floatingText.y -= 1;
+                floatingText.alpha -= 0.015;
+                if (floatingText.alpha <= 0) floatingText = null;
+            }
+
+            // Check wave complete
+            if (invaders.filter(inv => inv.alive).length === 0) {
                 wave++;
                 invaderSpeed += 0.5;
+                enemyFireRateMultiplier = Math.min(5, 1 + (wave - 1) * 0.2);
                 createInvaders();
                 updateHUD();
             }
 
             // Check if invaders reached bottom
             if (invaders.some(inv => inv.alive && inv.y > canvas.height - 100)) {
-                // Invaders reaching bottom causes heavy damage
-                playerHealth = Math.max(0, playerHealth - 0.5); // 50% damage
-                updateHUD();
+                playerHealth = Math.max(0, playerHealth - 0.5);
                 player.hit = true;
                 setTimeout(() => player.hit = false, 500);
-                playStochasticSound('hit');
+                playSound('hit');
                 
                 if (playerHealth <= 0) {
                     lives--;
                     if (lives > 0) {
                         playerHealth = 1.0;
-                        // Reset invaders to safer position
                         invaders.forEach(inv => {
-                            if (inv.alive) {
-                                inv.y = Math.max(50, inv.y - 100);
-                            }
+                            if (inv.alive) inv.y = Math.max(50, inv.y - 100);
                         });
                     } else {
                         gameOver();
                     }
                 } else {
-                    // Reset invaders to safer position if player still has health
                     invaders.forEach(inv => {
-                        if (inv.alive) {
-                            inv.y = Math.max(50, inv.y - 100);
-                        }
+                        if (inv.alive) inv.y = Math.max(50, inv.y - 100);
                     });
                 }
+                updateHUD();
             }
         }
 
@@ -1048,6 +969,7 @@
             overlay.classList.remove('hidden');
         }
 
+        // === RENDER ===
         function render() {
             ctx.fillStyle = '#000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1075,7 +997,7 @@
             for (let i = 0; i <= playerPoints; i++) {
                 const angle = (i / playerPoints) * Math.PI;
                 const radius = player.width / 2;
-                const noiseR = stochasticCompute(0.5, bitstream / 4, noise, i / 10) * 3 - 1.5;
+                const noiseR = stochasticCompute(0.5, bitstream / 4, noise, i / 10) * 2 - 1;
                 const x = player.x + player.width / 2 + Math.cos(angle) * (radius + noiseR);
                 const y = player.y + player.height / 2 + Math.sin(angle) * (radius / 2 + noiseR);
                 if (i === 0) ctx.moveTo(x, y);
@@ -1083,72 +1005,65 @@
             }
             ctx.fill();
 
-            // Draw invaders with enhanced stochastic rendering
-            invaders.forEach((inv, index) => {
+            // Draw invaders
+            invaders.forEach((inv, idx) => {
                 if (!inv.alive) return;
-                
-                // Stochastic color based on chaos level and position
-                const chaosHue = (stochasticCompute(0.5, bitstream / 4, noise, index * 0.1) * 300 + inv.chaosLevel * 60) % 360;
-                const chaosSat = 70 + stochasticCompute(0.6, bitstream / 8, noise, index * 0.2) * 30;
-                const chaosLight = 40 + stochasticCompute(0.4, bitstream / 6, noise, index * 0.3) * 20 + inv.chaosLevel * 10;
+
+                const chaosHue = (stochasticCompute(0.5, bitstream / 4, noise, idx * 0.1) * 300 + inv.chaosLevel * 60) % 360;
+                const chaosSat = 70 + stochasticCompute(0.6, bitstream / 8, noise, idx * 0.2) * 30;
+                const chaosLight = 45 + stochasticCompute(0.4, bitstream / 6, noise, idx * 0.3) * 15;
                 ctx.fillStyle = `hsl(${chaosHue}, ${chaosSat}%, ${chaosLight}%)`;
-                
-                // Stochastic pixel rendering with variable density based on chaos level
-                const pixelDensity = 0.6 + stochasticCompute(0.5, bitstream / 16, noise, index * 0.4) * 0.4 - inv.chaosLevel * 0.2;
-                
+
+                const pixelDensity = 0.7 + stochasticCompute(0.5, bitstream / 16, noise, idx * 0.4) * 0.3;
+
                 for (let px = 0; px < inv.width; px += 2) {
                     for (let py = 0; py < inv.height; py += 2) {
-                        if (Math.random() > pixelDensity) continue; // Skip some pixels stochastically
-                        
-                        const noiseX = stochasticCompute(0.5, bitstream / 4, noise, (px + py + index) / 50) * 6 - 3;
-                        const noiseY = stochasticCompute(0.5, bitstream / 4, noise, (px - py - index) / 50) * 6 - 3;
-                        
-                        // Variable pixel size for more chaos
-                        const pixelSize = 1 + Math.floor(stochasticCompute(0.3, bitstream / 8, noise, (px + py) / 20) * 2);
-                        
-                        ctx.fillRect(inv.x + px + noiseX, inv.y + py + noiseY, pixelSize, pixelSize);
+                        if (Math.random() > pixelDensity) continue;
+
+                        const noiseX = stochasticCompute(0.5, bitstream / 4, noise, (px + py + idx) / 50) * 4 - 2;
+                        const noiseY = stochasticCompute(0.5, bitstream / 4, noise, (px - py - idx) / 50) * 4 - 2;
+
+                        ctx.fillRect(inv.x + px + noiseX, inv.y + py + noiseY, 2, 2);
                     }
-                }
-                
-                // Occasional glitch effects - more likely for chaotic invaders
-                if (stochasticCompute(0.1, bitstream / 32, noise * 2, index + Date.now() * 0.01) > (0.9 - inv.chaosLevel * 0.3)) {
-                    ctx.save();
-                    ctx.globalAlpha = 0.2 + inv.chaosLevel * 0.3;
-                    ctx.fillStyle = inv.chaosLevel > 0.7 ? '#f0f' : '#fff';
-                    const glitchSize = 5 + inv.chaosLevel * 10;
-                    ctx.fillRect(inv.x - glitchSize/2, inv.y - glitchSize/2, inv.width + glitchSize, inv.height + glitchSize);
-                    ctx.restore();
                 }
             });
 
             // Draw bullets
             ctx.fillStyle = '#fff';
             bullets.forEach(bullet => {
-                const noiseX = stochasticCompute(0.5, bitstream / 4, noise, bullet.y / 100) * 3 - 1.5;
+                const noiseX = stochasticCompute(0.5, bitstream / 4, noise, bullet.y / 100) * 2 - 1;
                 ctx.fillRect(bullet.x + noiseX, bullet.y, bullet.width, bullet.height);
             });
 
             ctx.fillStyle = '#f0f';
             enemyBullets.forEach(bullet => {
-                const noiseX = stochasticCompute(0.5, bitstream / 4, noise, bullet.y / 100) * 3 - 1.5;
+                const noiseX = stochasticCompute(0.5, bitstream / 4, noise, bullet.y / 100) * 2 - 1;
                 ctx.fillRect(bullet.x + noiseX, bullet.y, bullet.width, bullet.height);
             });
 
-            // Draw ammo powerup on top
-            renderAmmoPowerup();
+            // Draw ammo powerup
+            if (ammoPowerup) {
+                ctx.save();
+                const pulse = Math.sin(ammoPowerup.pulse) * 0.3 + 0.7;
+                ctx.globalAlpha = pulse;
+                ctx.fillStyle = '#0ff';
+                ctx.fillRect(ammoPowerup.x, ammoPowerup.y, ammoPowerup.width, ammoPowerup.height);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 14px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('A', ammoPowerup.x + ammoPowerup.width / 2, ammoPowerup.y + ammoPowerup.height / 2 + 5);
+                ctx.restore();
+            }
 
-            // Floating text for ammo gain
+            // Draw floating text
             if (floatingText) {
                 ctx.save();
                 ctx.globalAlpha = floatingText.alpha;
-                ctx.font = 'bold 32px Courier New';
+                ctx.font = 'bold 20px Courier New';
                 ctx.fillStyle = '#ff0';
                 ctx.textAlign = 'center';
-                ctx.fillText(floatingText.value, floatingText.x, floatingText.y);
+                ctx.fillText(floatingText.text, floatingText.x, floatingText.y);
                 ctx.restore();
-                floatingText.y -= 1.2;
-                floatingText.alpha -= 0.02;
-                if (floatingText.alpha <= 0) floatingText = null;
             }
 
             // Draw particles
@@ -1157,7 +1072,7 @@
                 ctx.globalAlpha = p.alpha;
                 ctx.fillStyle = p.color;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI);
+                ctx.arc(p.x, p.y, 2, 0, 2 * Math.PI);
                 ctx.fill();
                 ctx.restore();
             });
@@ -1169,101 +1084,56 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Control panel updates
-        if (document.getElementById('bitstream')) {
-            document.getElementById('bitstream').addEventListener('input', (e) => {
-                currentBitstream = parseInt(e.target.value);
-                document.getElementById('bitstreamValue').textContent = e.target.value + ' bits';
-            });
-        }
-
-        if (document.getElementById('noise')) {
-            document.getElementById('noise').addEventListener('input', (e) => {
-                currentNoise = parseInt(e.target.value);
-                document.getElementById('noiseValue').textContent = e.target.value + '%';
-            });
-        }
-
-        if (document.getElementById('correlation')) {
-            document.getElementById('correlation').addEventListener('input', (e) => {
-                currentCorrelation = parseInt(e.target.value);
-                document.getElementById('correlationValue').textContent = e.target.value + '%';
-            });
-        }
-
-        if (document.getElementById('firingMode')) {
-            document.getElementById('firingMode').addEventListener('change', (e) => {
-                currentFiringMode = e.target.value;
-                const display = e.target.parentElement.querySelector('.value-display');
-                const mode = e.target.value;
-                const labels = {
-                    'deterministic': 'Classic',
-                    'offset': 'Balanced',
-                    'full': 'Chaos'
-                };
-                display.textContent = labels[mode];
-            });
-        }
-
-        // Settings modal functionality
-        const settingsModal = document.getElementById('settingsModal');
+        // === CONTROL PANEL ===
+        // Modal functionality
+        const modal = document.getElementById('settingsModal');
         const settingsBtn = document.getElementById('settingsBtn');
-        const closeSettings = document.getElementById('closeSettings');
-        const applySettings = document.getElementById('applySettings');
-        const modalClose = document.querySelector('.modal-close');
+        const closeBtn = document.getElementById('closeModal');
 
-        if (settingsBtn) {
-            settingsBtn.addEventListener('click', () => {
-                // Sync modal values with current settings
-                const bitstreamEl = document.getElementById('bitstream');
-                const noiseEl = document.getElementById('noise');
-                const correlationEl = document.getElementById('correlation');
-                const firingModeEl = document.getElementById('firingMode');
-                
-                if (bitstreamEl) bitstreamEl.value = currentBitstream;
-                if (noiseEl) noiseEl.value = currentNoise;
-                if (correlationEl) correlationEl.value = currentCorrelation;
-                if (firingModeEl) firingModeEl.value = currentFiringMode;
-                
-                // Update displays
-                document.getElementById('bitstreamValue').textContent = currentBitstream + ' bits';
-                document.getElementById('noiseValue').textContent = currentNoise + '%';
-                document.getElementById('correlationValue').textContent = currentCorrelation + '%';
-                
-                const labels = {'deterministic': 'Classic', 'offset': 'Balanced', 'full': 'Chaos'};
-                document.getElementById('firingModeValue').textContent = labels[currentFiringMode];
-                
-                settingsModal.style.display = 'block';
-            });
-        }
+        settingsBtn.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
 
-        if (closeSettings) {
-            closeSettings.addEventListener('click', () => {
-                settingsModal.style.display = 'none';
-            });
-        }
-
-        if (applySettings) {
-            applySettings.addEventListener('click', () => {
-                settingsModal.style.display = 'none';
-                // Settings are applied in real-time via the input event listeners
-            });
-        }
-
-        if (modalClose) {
-            modalClose.addEventListener('click', () => {
-                settingsModal.style.display = 'none';
-            });
-        }
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
 
         // Close modal when clicking outside
         window.addEventListener('click', (e) => {
-            if (e.target === settingsModal) {
-                settingsModal.style.display = 'none';
+            if (e.target === modal) {
+                modal.style.display = 'none';
             }
         });
 
-        // Start game loop
+        // Parameter event listeners
+        document.getElementById('bitstream').addEventListener('input', (e) => {
+            currentBitstream = parseInt(e.target.value);
+            document.getElementById('bitstreamValue').textContent = e.target.value + ' bits';
+            updateHUD();
+        });
+
+        document.getElementById('noise').addEventListener('input', (e) => {
+            currentNoise = parseInt(e.target.value);
+            document.getElementById('noiseValue').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('correlation').addEventListener('input', (e) => {
+            currentCorrelation = parseInt(e.target.value);
+            document.getElementById('correlationValue').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('firingMode').addEventListener('change', (e) => {
+            currentFiringMode = e.target.value;
+        });
+
+        document.getElementById('enemyFireRate').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            enemyFireRateMultiplier = value / 10;
+            document.getElementById('enemyFireRateValue').textContent = enemyFireRateMultiplier.toFixed(1) + 'x';
+            updateHUD();
+        });
+
+        // Start
         createInvaders();
         updateHUD();
         gameLoop();
