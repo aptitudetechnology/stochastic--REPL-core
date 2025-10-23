@@ -233,42 +233,154 @@ pandas>=1.3.0
 pytest>=7.0.0
 ```
 
-## Success Criteria
+# Running the Tests
 
-### Functional Verification
-- ✅ All LFSR modules produce maximal-length sequences
-- ✅ QBG mixing modes produce valid bitstreams
-- ✅ Stochastic multiplication converges to correct values
-- ✅ Hardware module synthesizes without errors
+## Prerequisites
 
-### Hypothesis Validation
-- ✅ QBG modes show reduced autocorrelation vs baseline
-- ✅ QBG modes maintain or improve multiplication accuracy
-- ✅ Triple-LFSR shows further correlation reduction
-- ✅ Results reproducible across multiple test runs
+1. **Install Python dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Performance Metrics
-- ✅ <1% error in stochastic multiplication (for P(A)×P(B) > 0.1)
-- ✅ >50% reduction in autocorrelation peak vs baseline
-- ✅ <5% variation in accuracy across mixing modes
-- ✅ Successful synthesis on Tang Nano 9K
+2. **Install cocotb:**
+   ```bash
+   pip install cocotb
+   ```
 
-## Risk Mitigation
+3. **Install Icarus Verilog (simulation backend):**
+   ```bash
+   # Ubuntu/Debian
+   sudo apt-get install iverilog
 
-1. **Reference Implementation**: Python models for all Verilog modules
-2. **Statistical Rigor**: Large sample sizes (10,000+ bits per test)
-3. **Cross-validation**: Multiple test methods for each hypothesis
-4. **Hardware Verification**: Oscilloscope validation of physical outputs
+   # Or using conda
+   conda install -c conda-forge iverilog
+   ```
 
-## Deliverables
+## Test Execution
 
-1. **Complete test suite** with 100% coverage
-2. **Statistical analysis reports** with charts and metrics
-3. **Hypothesis validation results** (accept/reject with evidence)
-4. **Hardware verification** on Tang Nano 9K
-5. **Documentation** for replication and extension
+### Option 1: Run all tests with Makefile
+```bash
+# Run all tests
+make test-all
 
----
+# Run specific test suites
+make test-lfsr      # Test LFSR primitives
+make test-qbg       # Test QBG hypothesis (CORE TEST)
+make test-mult      # Test stochastic multiplication
+make test-top       # Test top-level integration
 
-*This plan provides a systematic approach to validating the QBG hypothesis through comprehensive simulation and hardware testing.*</content>
-<parameter name="filePath">/home/chris/stochastic--REPL-core/cocotb/README.md
+# Run with different simulators
+make SIM=verilator test-all
+make SIM=vcs test-all  # Commercial simulator
+```
+
+### Option 2: Run individual tests with Python script
+```bash
+# Run all tests
+python run_tests.py
+
+# Run specific test (requires manual Verilog file specification)
+python -m pytest test_lfsr_primitives.py -v
+```
+
+### Option 3: Manual cocotb execution
+```bash
+# Example: Test LFSR primitives
+cocotb-run \
+  --module test_lfsr_primitives \
+  --top lfsr_8bit \
+  --sim icarus \
+  --include ../verilog/rtl/primitives \
+  ../verilog/rtl/primitives/lfsr_8bit.v \
+  test_lfsr_primitives.py
+```
+
+## Test Results and Analysis
+
+### Output Files
+- `results/*.npz`: Raw test data and analysis results
+- `results/*.png`: Generated plots and visualizations
+- `results/test_report.md`: Comprehensive test report
+
+### Key Metrics to Monitor
+- **Cross-correlation reduction**: > 50% for hypothesis support
+- **Autocorrelation improvement**: > 30% reduction
+- **Spectral flatness**: > 70% for good randomness
+- **Multiplication accuracy**: QBG should outperform baseline
+
+### Interpreting Results
+The core hypothesis test (`test_qbg_dual_mixer.py`) will output:
+```
+Correlation Analysis Results:
+  Cross-correlation reduction: 0.734
+  Autocorrelation improvement: 0.456
+  Spectral flatness: 0.823
+  Hypothesis supported: True
+```
+
+## Debugging
+
+### Common Issues
+
+1. **Import errors**: Ensure `PYTHONPATH` includes the `utils/` directory
+   ```bash
+   export PYTHONPATH=$PWD/utils:$PYTHONPATH
+   ```
+
+2. **Verilog compilation errors**: Check file paths in test files match your Verilog structure
+
+3. **Simulation hangs**: Use `make GUI=1` to enable waveform viewer for debugging
+
+### Viewing Waveforms
+```bash
+# Run test with waveform output
+make GUI=1 test-qbg
+
+# Or manually
+cocotb-run --module test_qbg_dual_mixer --top qbg_dual_mixer --sim icarus --gui 1 [files...]
+```
+
+## Performance Optimization
+
+### Simulation Speed
+- Use `verilator` for faster simulation: `make SIM=verilator`
+- Reduce sample counts in tests for quicker iteration
+- Use `pytest -x` to stop on first failure
+
+### Memory Usage
+- Large bitstream collections may require significant RAM
+- Consider reducing `num_samples` for memory-constrained systems
+
+## Integration with Hardware Testing
+
+After successful simulation:
+1. Run `make report` to generate synthesis-ready metrics
+2. Use Tang Nano 9K toolchain for FPGA implementation
+3. Compare simulation results with hardware measurements
+4. Validate correlation reduction in actual stochastic circuits
+
+## Troubleshooting
+
+### Dependencies
+```bash
+# Check cocotb installation
+python -c "import cocotb; print(cocotb.__version__)"
+
+# Check Verilog simulator
+iverilog -V
+
+# Check Python packages
+pip list | grep -E "(numpy|scipy|matplotlib)"
+```
+
+### Test Failures
+- Check Verilog file paths match your directory structure
+- Ensure LFSR periods match test expectations (255, 127, 511)
+- Verify clock and reset timing in testbenches
+- Check that Verilog modules have correct port names
+
+### Performance Issues
+- Use `SIM=verilator` for better performance
+- Reduce test sample sizes for faster iteration
+- Run tests in parallel if system supports it
+````

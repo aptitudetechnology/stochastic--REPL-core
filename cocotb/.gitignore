@@ -1,0 +1,43 @@
+# Cocotb simulation artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Simulation outputs
+sim_build/
+*.vcd
+*.fst
+*.gtkw
+*.vvp
+*.vpi
+
+# Test results and data
+results/
+*.npz
+*.csv
+*.png
+*.pdf
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+cocotb.log
+
+# Temporary files
+*.tmp
+*.temp
